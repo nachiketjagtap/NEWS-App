@@ -10,7 +10,7 @@ class NewsApp:
 
         self.load_gui()
 
-        self.load_news_item(5)
+        self.load_news_item(0)
 
 
 
@@ -28,11 +28,16 @@ class NewsApp:
     def load_news_item(self,index):
 
         self.clear()
-
-        img_url = self.data['articles'][index]['urlToImage']
-        raw_data = urlopen(img_url).read()
-        im = Image.open(io.BytesIO(raw_data)).resize((350, 250))
-        photo = ImageTk.PhotoImage(im)
+        try:
+            img_url = self.data['articles'][index]['urlToImage']
+            raw_data = urlopen(img_url).read()
+            im = Image.open(io.BytesIO(raw_data)).resize((350, 250))
+            photo = ImageTk.PhotoImage(im)
+        except:
+            img_url = 'https://www.hhireb.com/wp-content/uploads/2019/08/default-no-img.jpg'
+            raw_data = urlopen(img_url).read()
+            im = Image.open(io.BytesIO(raw_data)).resize((350, 250))
+            photo = ImageTk.PhotoImage(im)
 
         label=Label(self.root,image=photo)
         label.pack()
@@ -51,20 +56,22 @@ class NewsApp:
 
         frame = Frame(self.root,bg='black')
         frame.pack(expand=True,fill=BOTH)
+        if index!=0:
+            prev = Button(frame,text='Prev',width=16,height=3,command=lambda :self.load_news_item(index-1))
+            prev.pack(side=LEFT)
 
-        prev = Button(frame,text='Prev',width=16,height=3)
-        prev.pack(side=LEFT)
-
-        more = Button(frame, text='Read More', width=16, height=3)
+        more = Button(frame, text='Read More', width=16, height=3, command=lambda :self.open_link(self.data['articles'][index]['url']))
         more.pack(side=LEFT)
-
-        next = Button(frame, text='Next', width=16, height=3)
-        next.pack(side=LEFT)
+        if index!=len(self.data['articles'])-1:
+            next = Button(frame, text='Next', width=16, height=3,command=lambda :self.load_news_item(index+1))
+            next.pack(side=LEFT)
 
 
 
 
         self.root.mainloop()
+    def open_link(self,url):
+        webbrowser.open(url)
 
 
 
