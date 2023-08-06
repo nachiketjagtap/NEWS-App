@@ -73,7 +73,4 @@ class NewsApp:
     def open_link(self,url):
         webbrowser.open(url)
 
-
-
-
 obj = NewsApp()
