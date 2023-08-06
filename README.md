@@ -1,1 +1,1 @@
-#This is a simple project where I will be implementing the concepts of fetching dat from api.
+#This is a simple project where I learned the concept of fetching data from api. 
